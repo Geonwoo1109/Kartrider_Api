@@ -1,0 +1,26 @@
+var a = {
+	"result":true,
+	"data":[
+		{
+			"hash":"9aa87d55fe5b7ec3798ca71aafe1ef60e563055fdb6fa0f9446af054cb78593c",
+			"kart":"951",
+			"KartName":"광속배찌",
+			"KartType":"아이템",
+			"UniqueLevel":"일반",
+			"toShow":"1"
+		},
+		{	
+			"hash":"aafa4abb6e78af6e3b25f72727b4cff6e7a0979721930caa21e27f81ced782d5",
+			"kart":"1133",
+			"KartName":"스팅레이 X",
+			"KartType":"스피드",
+			"UniqueLevel":"레전드",
+			"toShow":"1"
+		}
+	]
+};
+
+일 때, 내가 가진 문자열은 9aa87d55fe5b7ec3798ca71aafe1ef60e563055fdb6fa0f9446af054cb78593c이다.
+여기서 광속배찌를 가져오려면?
+
+a.data.find(e => e.hash === "알고있는거").KartName
