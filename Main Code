@@ -1,0 +1,64 @@
+
+
+const kalingModule = require('kaling').Kakao();
+const Kakao = new kalingModule();
+Kakao.init('3ec83a6de844b575e244d3b3b5af0ad0'); //자스키
+Kakao.login('ckrgksqns333@gmail.com','wlsWkckrgksqns123'); //아디•비번
+
+const Jsoup = org.jsoup.Jsoup;
+
+var Key =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiOTkwNDM3MjIxIiwiYXV0aF9pZCI6IjQiLCJ0b2tlbl90eXBlIjoiQWNjZXNzVG9rZW4iLCJzZXJ2aWNlX2lkIjoiNDMwMDExMzkzIiwiWC1BcHAtUmF0ZS1MaW1pdCI6IjIwMDAwOjEwIiwibmJmIjoxNjA4MzkxODMyLCJleHAiOjE2NzE0NjM4MzIsImlhdCI6MTYwODM5MTgzMn0.qxByvfxvxjxf213RwwmYh046kOvDncQYOPfPxlWnngE";
+
+function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName, threadId) {
+
+
+if (msg.startsWith("..유저 ")) {
+  var User = msg.substr(5);
+  try {
+    
+    //오픈api, 아이디로 고유번호
+    let userId = Jsoup.connect ("https://api.nexon.co.kr/kart/v1.0/users/nickname/" + User)
+    .header ("Authorization", Key).data ("nickname", User)
+    .ignoreContentType(true).get().text();
+    
+    //오픈 api, 고유번호로 최근매치타입
+    let matchData = Jsoup.connect (
+    "https://api.nexon.co.kr/kart/v1.0/users/"
+    + JSON.parse (userId)["accessId"] +
+    "/matches?start_date=&end_date=&offset=&limit=1&match_types=")
+    .header ("Authorization", Key).ignoreContentType(true).get().text();
+    
+    //post api, Avatar
+    var data01 = JSON.parse(Jsoup.connect("https://tmi.nexon.com/proxy/UserProfile?keyword=" + User + "&matchType=" + JSON.parse (matchData).matches[0].matches[0].matchType)
+    .header("referer","https://tmi.nexon.com/kart/user?nick=" + User)
+    .header("apikey","ZG9uJ3QgYWNjZXNzIHBsZWFzZQ==")
+    .ignoreContentType(true).ignoreHttpErrors(true).get().text());
+    
+    //post api, Kart
+    var data02 = JSON.parse(Jsoup.connect("https://tmi.nexon.com/")
+    .header("referer","https://tmi.nexon.com/kart/user?nick=" + User)
+    .header("apikey","ZG9uJ3QgYWNjZXNzIHBsZWFzZQ==")
+    .ignoreContentType(true).ignoreHttpErrors(true).get().text());
+    
+Kakao.send(room, {"link_ver" : "4.0",
+                  "template_id" : 45757,
+                  "template_args" : {
+                    Nickname: msg.substr(4),
+                    Avatar: "https://s3-ap-northeast-1.amazonaws.com/solution-userstats/metadata/character/" + data01.data.matches[0].matches[0].character + ".png",
+                    Kartbody: "레벨",
+                    KartbodyImg: "https://s3-ap-northeast-1.amazonaws.com/solution-userstats/metadata/kart/" + data02.data.matches[0].matches[0].kart + ".png?v=1611596348",
+                    License: "1",
+                    LicenseImg: "",
+                    Level: "1",
+                    LevelImg: ""
+                  }
+                 }, "custom");
+
+} catch(e) {
+  replier.reply(e);
+}
+
+}
+} 
+
