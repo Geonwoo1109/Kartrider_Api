@@ -2,13 +2,13 @@
 
 const kalingModule = require('kaling').Kakao();
 const Kakao = new kalingModule();
-Kakao.init('3ec83a6de844b575e244d3b3b5af0ad0'); //자스키
-Kakao.login('ckrgksqns333@gmail.com','wlsWkckrgksqns123'); //아디•비번
+Kakao.init(''); //자스키
+Kakao.login('',''); //아디•비번
 
 const Jsoup = org.jsoup.Jsoup;
 
 var Key =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiOTkwNDM3MjIxIiwiYXV0aF9pZCI6IjQiLCJ0b2tlbl90eXBlIjoiQWNjZXNzVG9rZW4iLCJzZXJ2aWNlX2lkIjoiNDMwMDExMzkzIiwiWC1BcHAtUmF0ZS1MaW1pdCI6IjIwMDAwOjEwIiwibmJmIjoxNjA4MzkxODMyLCJleHAiOjE2NzE0NjM4MzIsImlhdCI6MTYwODM5MTgzMn0.qxByvfxvxjxf213RwwmYh046kOvDncQYOPfPxlWnngE";
+"";
 
 function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName, threadId) {
 
