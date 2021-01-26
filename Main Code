@@ -1,64 +1,202 @@
 
 
+
 const kalingModule = require('kaling').Kakao();
 const Kakao = new kalingModule();
-Kakao.init(''); //자스키
+Kakao.init(""); //카카오링크 자스키
 Kakao.login('',''); //아디•비번
 
+
+
+var Key = ""; // 카트라이더 API key
+var allsee = "\u200d".repeat (500);
+
 const Jsoup = org.jsoup.Jsoup;
+const Fs = FileStream;
+var NewMaster = [
+"[관리자]_에티선생",
+"[관리자]_인썸김기리",
+"[관리자]_인썸김비서",
+"[관리자]_중중이애오",
+"[관리자]_Hyewonnn",
+"[관리자]_K1ngZico",
+"[서포터]_에쀀",
+"[관리자]_광요밍",
+"[임시관리자]_에쀀"];
 
-var Key =
-"";
+function response(room, msg, sender, isGroupChat, replier, imageDB, packageName) {
+  /*12시 알림*/
+  /*
+  if (room == "카톡봇 테스트방" && sender == "방장봇" && msg == "12시") {
+    replier.reply("(PC)카트라이더 유저들의 모임🔊","점심시간이네요! 다들 점심먹고 게임하세요~");
+    replier.reply("(PC)카트라이더 유저들의 모임🔊",
+    "닉네임봇 참여코드는 [0000404]입니다!\n참여코드는 도배방지를 위함이니 양해바랍니다~");
+  */
+  if (room == "(PC)카트라이더 유저들의 모임🔊" && sender =="LEG건우") {
+    if (msg == "ㅂㅊㅎㅅㅇ") {
+    replier.reply("번창하세요");
+    }
+  }
 
-function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName, threadId) {
+
+if (msg == ".봇" || msg ==".명령어") replier.reply ("닉네임 확인봇에 관한 정보입니다" + allsee
+  +"\n\n\n[설명]"+"\n카트라이더 유저의 닉네임과 가장 최근의 매치기록을 알려주는 봇입니다. 이 외에도 다양한 기능이 있습니다."
+  +"\n\n[명령어 목록]" + "\n.유저 닉네임 ex).유저 에티선생\n..유저 닉네임 ex)..유저 에티선생\n.매치 닉네임 ex).매치 에티선생\n.시간\n.봇상태"
+  /*+"\n\n[봇 사용 가능자]\n" + NewMaster.join("\n")
+  +"\n\n[봇 관련 문의]\n오픈채팅방 [LEG건우]"*/);
+  
+if ((room == "(PC)카트라이더 유저들의 모임🔊" &&
+(NewMaster.includes (sender))||(sender == "LEG건우"))
+  || room != "(PC)카트라이더 유저들의 모임🔊") {
 
 
-if (msg.startsWith("..유저 ")) {
-  var User = msg.substr(5);
-  try {
-    
-    //오픈api, 아이디로 고유번호
-    let userId = Jsoup.connect ("https://api.nexon.co.kr/kart/v1.0/users/nickname/" + User)
+if (msg.startsWith(".유저 ")) {
+     try {
+     User = msg.substr(4);
+//     replier.reply (msg.substr (4));
+    let data3 = Jsoup.connect ("https://api.nexon.co.kr/kart/v1.0/users/nickname/" + User)
     .header ("Authorization", Key).data ("nickname", User)
     .ignoreContentType(true).get().text();
+    data3 = JSON.parse(data3);
     
-    //오픈 api, 고유번호로 최근매치타입
+     replier.reply (
+     "유저 고유 Id: " + data3 ["accessId"]
+     + "\n게임 닉네임: " + data3 ["name"]
+     + "\n레벨: " + data3 ["level"]);
+   } catch (e) {
+     replier.reply("존재하지 않는 라이더 이름입니다.\n검색할 수 없는 이유는? -> [.이유]");
+   }
+  }
+  if (msg == ".이유") {
+    replier.reply("[닉네임이 검색되지 않는 경우]\n\n1. 존재하지 않는 유저일 때\n2. 닉네임이 변경되었을 때\n3. 오랫동안 접속하지 않은 복귀유저일 때");
+  }
+
+//매치데이터
+
+if (msg.startsWith(".매치 ")) {
+  
+  try {
+    let userId = Jsoup.connect ("https://api.nexon.co.kr/kart/v1.0/users/nickname/" + msg.substr(4))
+    .header ("Authorization", Key).data ("nickname", msg.substr (4))
+    .ignoreContentType(true).get().text();
+    
     let matchData = Jsoup.connect (
     "https://api.nexon.co.kr/kart/v1.0/users/"
     + JSON.parse (userId)["accessId"] +
     "/matches?start_date=&end_date=&offset=&limit=1&match_types=")
     .header ("Authorization", Key).ignoreContentType(true).get().text();
     
-    //post api, Avatar
-    var data01 = JSON.parse(Jsoup.connect("https://tmi.nexon.com/proxy/UserProfile?keyword=" + User + "&matchType=" + JSON.parse (matchData).matches[0].matches[0].matchType)
-    .header("referer","https://tmi.nexon.com/kart/user?nick=" + User)
-    .header("apikey","ZG9uJ3QgYWNjZXNzIHBsZWFzZQ==")
-    .ignoreContentType(true).ignoreHttpErrors(true).get().text());
+    try {
+    let Final = Jsoup.connect(
+    "https://api.nexon.co.kr/kart/v1.0/matches/"
+    + JSON.parse (matchData).matches[0].matches[0].matchId)
+    .header ("Authorization", Key).ignoreContentType(true).get().text();
     
-    //post api, Kart
-    var data02 = JSON.parse(Jsoup.connect("https://tmi.nexon.com/")
-    .header("referer","https://tmi.nexon.com/kart/user?nick=" + User)
-    .header("apikey","ZG9uJ3QgYWNjZXNzIHBsZWFzZQ==")
-    .ignoreContentType(true).ignoreHttpErrors(true).get().text());
+    var a = [];
+    for (i=0; i<JSON.parse (Final)["players"].length; i++) {
+      
+      a.push (JSON.parse (Final).players[i].characterName);
+      //replier.reply (JSON.parse (Final).players[i].characterName);
+    }
+    replier.reply ("[개인전] 참여선수목록\n\n" + a.join ("\n"));
+    a = [];
+    replier.reply (a);
     
+  } catch (e1) {
+    let Final = Jsoup.connect(
+    "https://api.nexon.co.kr/kart/v1.0/matches/"
+    + JSON.parse (matchData).matches[0].matches[0].matchId)
+    .header ("Authorization", Key).ignoreContentType(true).get().text();
+    
+    a = [];
+    for (i=0; i<JSON.parse (Final).teams[0].players.length; i++) {
+      a.push (JSON.parse (Final).teams[0].players[i].characterName);
+    }
+    a.push ("vs");
+    
+    for (i=0; i<JSON.parse (Final).teams[0].players.length; i++) {
+      a.push (JSON.parse (Final).teams[1].players[i].characterName);
+    }
+    replier.reply ("[팀전] 참여선수목록\n\n" + a.join ("\n"));
+    a = [];
+    
+  }
+
+  } catch (e) {
+    replier.reply ("기록이 존재하지 않습니다.");
+  }
+
+
+}
+  
+  if (msg.startsWith("..유저 ")) {
+  try {
+  var t = Jsoup.connect("https://tmi.nexon.com/kart/user?nick=LEG%25EA%25B1%25B4%25EC%259A%25B0").ignoreContentType(true).ignoreHttpErrors(true).get().select("#usercontent > div.profile > div.nick > h1 > span");
+  replier.reply(t);
+  } catch(e) {
+    replier.reply("해당 오류 "+e);
+  }
+  
+try {
+  //닉네임으로 정보가져오기
+    let userId = Jsoup.connect (
+    "https://api.nexon.co.kr/kart/v1.0/users/nickname/" + msg.substr(5))
+    .header ("Authorization", Key).data ("nickname", msg.substr (5))
+    .ignoreContentType(true).get().text();
+    
+    //userId에서 고유번호 가져오고 검색
+    let matchData = Jsoup.connect (
+    "https://api.nexon.co.kr/kart/v1.0/users/" + JSON.parse (userId)["accessId"] +
+    "/matches?start_date=&end_date=&offset=&limit=1&match_types=")
+    .header ("Authorization", Key).ignoreContentType(true).get().text();
+    
+    //matchData에서 캐릭터번호랑 카트번호 가져오기
+    var characterImg = (JSON.parse(matchData).matches[0].matches[0].player.character);
+    var kartImg = (JSON.parse(matchData).matches[0].matches[0].player.kart);
+    //replier.reply(characterImg);
+    
+
+          let kartList =
+          JSON.parse(org.jsoup.Jsoup.connect('https://tmi.nexon.com/apis/KartNames')
+        .header('referer', "https://tmi.nexon.com/kart/user?nick=" + msg.substr(5))
+        .header('apikey', 'ZG9uJ3QgYWNjZXNzIHBsZWFzZQ==')
+        .ignoreContentType(true).ignoreHttpErrors(true).get().text())
+        
+        //replier.reply(kartList.data.find(e => e.hash === kartImg).KartName);
+ 
+        const characterUrl = "https://s3-ap-northeast-1.amazonaws.com/solution-userstats/metadata/character/";
+        const kartUrl = "https://s3-ap-northeast-1.amazonaws.com/solution-userstats/metadata/kart/";
+    
+        
+
+    
+  var guild = Jsoup.connect("http://kart.nexon.com/Garage/Main?strRiderID="+msg.substr(5)).get().select("span[id=GuildName]").text();
+  //replier.reply(guild);
+  
+    var level = Jsoup.connect("http://kart.nexon.com/Garage/Main?strRiderID="+msg.substr(5))
+    .get().select("div[id=GloveImg]").select("img").attr("src");
+    //replier.reply(level.text());
+  //replier.reply(String.data+"\n"+String.data1+/*"\n"+data2+*/"\n"+String.data3+"\n"+String.data4+"\n"+String.data5+"\n");
+  //replier.reply(JSON.parse(userId)["level"]);
 Kakao.send(room, {"link_ver" : "4.0",
                   "template_id" : 45757,
                   "template_args" : {
-                    Nickname: msg.substr(4),
-                    Avatar: "https://s3-ap-northeast-1.amazonaws.com/solution-userstats/metadata/character/" + data01.data.matches[0].matches[0].character + ".png",
-                    Kartbody: "레벨",
-                    KartbodyImg: "https://s3-ap-northeast-1.amazonaws.com/solution-userstats/metadata/kart/" + data02.data.matches[0].matches[0].kart + ".png?v=1611596348",
-                    License: "1",
-                    LicenseImg: "",
-                    Level: "1",
-                    LevelImg: ""
+                    Nickname: msg.substr(5),
+                    Avatar: characterUrl + characterImg + ".png",
+                    Kartbody: kartList.data.find(e => e.hash === kartImg).KartName,
+                    KartbodyImg: kartUrl + kartImg + ".png",
+                    Guild: guild,
+                    Level: JSON.parse(userId)["level"],
+                    LevelImg: level
                   }
                  }, "custom");
 
 } catch(e) {
-  replier.reply(e);
+  replier.reply("존재하지 않는 라이더명입니다.");
 }
 
 }
-} 
-
+  
+  
+}
+}
