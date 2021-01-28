@@ -1,0 +1,32 @@
+        let licenseimg;
+        if(this.userMatches.length > 1){
+            let license = '-1'
+            try{
+                license = this.userMatches[0].player.rankinggrade2;
+            }catch(e){
+                license = '-1'
+            }
+            switch(license)
+            {
+                case '1':
+                    licenseimg = <span className="license beginner"></span>
+                    break;
+                case '2':
+                    licenseimg = <span className="license rookie"></span>
+                    break;
+                case '3':
+                    licenseimg = <span className="license l3"></span>
+                    break;
+                case '4':
+                    licenseimg = <span className="license l2"></span>
+                    break;
+                case '5':
+                    licenseimg = <span className="license l1"></span>
+                    break;
+                case '6':
+                    licenseimg = <span className="license pro"></span>
+                    break;
+                default:
+                    break;
+            }
+        }
