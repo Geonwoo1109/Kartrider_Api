@@ -3,12 +3,13 @@
 
 const kalingModule = require('kaling').Kakao();
 const Kakao = new kalingModule();
-Kakao.init(""); //카카오링크 자스키
+Kakao.init(''); //자스키
 Kakao.login('',''); //아디•비번
 
 
 
-var Key = ""; // 카트라이더 API key
+var Key =
+"";
 var allsee = "\u200d".repeat (500);
 
 const Jsoup = org.jsoup.Jsoup;
@@ -22,7 +23,10 @@ var NewMaster = [
 "[관리자]_K1ngZico",
 "[서포터]_에쀀",
 "[관리자]_광요밍",
-"[임시관리자]_에쀀"];
+"[임시관리자]_에쀀",
+"[관리자]_Insom2nd",
+"[임시관리자]_졷트북",
+"[디스코드관리자]_한정빔"];
 
 function response(room, msg, sender, isGroupChat, replier, imageDB, packageName) {
   /*12시 알림*/
@@ -41,7 +45,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
 
 if (msg == ".봇" || msg ==".명령어") replier.reply ("닉네임 확인봇에 관한 정보입니다" + allsee
   +"\n\n\n[설명]"+"\n카트라이더 유저의 닉네임과 가장 최근의 매치기록을 알려주는 봇입니다. 이 외에도 다양한 기능이 있습니다."
-  +"\n\n[명령어 목록]" + "\n.유저 닉네임 ex).유저 에티선생\n..유저 닉네임 ex)..유저 에티선생\n.매치 닉네임 ex).매치 에티선생\n.시간\n.봇상태"
+  +"\n\n[명령어 목록]" + "\n.유저 닉네임 ex).유저 에티선생\n..유저 닉네임 ex)..유저 에티선생\n.매치 닉네임 ex).매치 에티선생\n.시간\n.봇상태\n.멜론 노래 ex).멜론 비행운"
   /*+"\n\n[봇 사용 가능자]\n" + NewMaster.join("\n")
   +"\n\n[봇 관련 문의]\n오픈채팅방 [LEG건우]"*/);
   
@@ -153,6 +157,33 @@ try {
     //matchData에서 캐릭터번호랑 카트번호 가져오기
     var characterImg = (JSON.parse(matchData).matches[0].matches[0].player.character);
     var kartImg = (JSON.parse(matchData).matches[0].matches[0].player.kart);
+    var LicenseNumber = (JSON.parse(matchData).matches[0].matches[0].player.rankinggrade2);
+    //replier.reply(LicenseNumber);
+    var License = "";
+    var LicenseLink = "https://tmi.nexon.com/img/icon_";
+    switch(LicenseNumber)
+            {
+                case '1':
+                    License = "beginner";
+                    break;
+                case '2':
+                    License = "rookie";
+                    break;
+                case '3':
+                    License = "l3";
+                    break;
+                case '4':
+                    License = "l2";
+                    break;
+                case '5':
+                    License = "l1";
+                    break;
+                case '6':
+                    License = "pro";
+                    break;
+                default:
+                    break;
+            }
     //replier.reply(characterImg);
     
 
@@ -178,25 +209,38 @@ try {
     //replier.reply(level.text());
   //replier.reply(String.data+"\n"+String.data1+/*"\n"+data2+*/"\n"+String.data3+"\n"+String.data4+"\n"+String.data5+"\n");
   //replier.reply(JSON.parse(userId)["level"]);
+  
+
+  var KartbodyImg = ""; 
+  var KartbodyName = "";
+  //replier.reply(KartImg);
+  try {
+    KartbodyName = kartList.data.find(e => e.hash === kartImg).KartName;
+    KartbodyImg = kartUrl + kartImg + ".png";
+  } catch(e) {
+    KartbodyName = "????";
+    KartbodyImg = "https://tmi.nexon.com/img/assets/empty_kart.png";
+  }
 Kakao.send(room, {"link_ver" : "4.0",
                   "template_id" : 45757,
                   "template_args" : {
                     Nickname: msg.substr(5),
                     Avatar: characterUrl + characterImg + ".png",
-                    Kartbody: kartList.data.find(e => e.hash === kartImg).KartName,
-                    KartbodyImg: kartUrl + kartImg + ".png",
+                    Kartbody: KartbodyName,
+                    KartbodyImg: KartbodyImg,
                     Guild: guild,
+                    License: License,
+                    LicenseImg: LicenseLink + License + ".png",
                     Level: JSON.parse(userId)["level"],
                     LevelImg: level
                   }
                  }, "custom");
 
 } catch(e) {
-  replier.reply("존재하지 않는 라이더명입니다.");
+  replier.reply("존재하지 않는 라이더명입니다.\n" + e);
 }
 
 }
-  
-  
+
 }
 }
