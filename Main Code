@@ -25,7 +25,7 @@ var NewMaster = [
 "[관리자]_광요밍",
 "[임시관리자]_에쀀",
 "[관리자]_Insom2nd",
-"[임시관리자]_졷트북",
+"[서포터]_졷트북",
 "[디스코드관리자]_한정빔"];
 
 function response(room, msg, sender, isGroupChat, replier, imageDB, packageName) {
@@ -134,12 +134,14 @@ if (msg.startsWith(".매치 ")) {
 }
   
   if (msg.startsWith("..유저 ")) {
+    /*
   try {
   var t = Jsoup.connect("https://tmi.nexon.com/kart/user?nick=LEG%25EA%25B1%25B4%25EC%259A%25B0").ignoreContentType(true).ignoreHttpErrors(true).get().select("#usercontent > div.profile > div.nick > h1 > span");
   replier.reply(t);
   } catch(e) {
     replier.reply("해당 오류 "+e);
   }
+  */
   
 try {
   //닉네임으로 정보가져오기
@@ -202,6 +204,9 @@ try {
 
     
   var guild = Jsoup.connect("http://kart.nexon.com/Garage/Main?strRiderID="+msg.substr(5)).get().select("span[id=GuildName]").text();
+  if (guild == "가입된클럽이없습니다") {
+    guild = "클럽 미가입";
+  }
   //replier.reply(guild);
   
     var level = Jsoup.connect("http://kart.nexon.com/Garage/Main?strRiderID="+msg.substr(5))
