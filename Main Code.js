@@ -3,32 +3,18 @@
 
 const kalingModule = require('kaling').Kakao();
 const Kakao = new kalingModule();
-Kakao.init('3ec83a6de844b575e244d3b3b5af0ad0'); //자스키
-Kakao.login('ckrgksqns333@gmail.com','wlsWkckrgksqns123'); //아디•비번
+Kakao.init(''); //자스키
+Kakao.login('',''); //아디•비번
 
 
 
-var Key =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiOTkwNDM3MjIxIiwiYXV0aF9pZCI6IjQiLCJ0b2tlbl90eXBlIjoiQWNjZXNzVG9rZW4iLCJzZXJ2aWNlX2lkIjoiNDMwMDExMzkzIiwiWC1BcHAtUmF0ZS1MaW1pdCI6IjIwMDAwOjEwIiwibmJmIjoxNjA4MzkxODMyLCJleHAiOjE2NzE0NjM4MzIsImlhdCI6MTYwODM5MTgzMn0.qxByvfxvxjxf213RwwmYh046kOvDncQYOPfPxlWnngE";
+var Key =""; // 
 var allsee = "\u200d".repeat (500);
 
 const Jsoup = org.jsoup.Jsoup;
 const Fs = FileStream;
 
 function response(room, msg, sender, isGroupChat, replier, imageDB, packageName) {
-
-
-if (msg == ".봇" || msg ==".명령어") {
-  replier.reply ("닉네임 확인봇에 관한 정보입니다" + allsee
-  +"\n\n\n[설명]"+"\n카트라이더 유저의 닉네임과 가장 최근의 매치기록을 알려주는 봇입니다. 이 외에도 다양한 기능이 있습니다."
-  +"\n\n[명령어 목록]" + "\n.유저 닉네임 ex).유저 에티선생\n..유저 닉네임 ex)..유저 에티선생\n.매치 닉네임 ex).매치 에티선생\n.시간\n.봇상태\n.멜론 노래 ex).멜론 비행운\n.큰글씨 (원하는거) ex).큰글씨 건우!\n.방정보 방링크 ex).방정보 https://open.kakao.com/me/Check_Nickname"
-  /*+"\n\n[봇 사용 가능자]\n" + NewMaster.join("\n")
-  +"\n\n[봇 관련 문의]\n오픈채팅방 [LEG건우]"*/);
-  replier.reply("https://open.kakao.com/me/Check_Nickname");
-  }
-
-
-
 
 if (msg.startsWith(".유저 ")) {
      try {
