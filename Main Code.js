@@ -1,4 +1,4 @@
-
+const scriptName = "Kartrider Test Api";
 
 
 const kalingModule = require('kaling').Kakao();
@@ -8,13 +8,16 @@ Kakao.login('',''); //아디•비번
 
 
 
-var Key =""; // 
+var Key =
+"";
 var allsee = "\u200d".repeat (500);
 
 const Jsoup = org.jsoup.Jsoup;
 const Fs = FileStream;
 
 function response(room, msg, sender, isGroupChat, replier, imageDB, packageName) {
+
+
 
 if (msg.startsWith(".유저 ")) {
      try {
@@ -213,7 +216,9 @@ Kakao.send(room, {"link_ver" : "4.0",
                  }, "custom");
 
 } catch(e) {
-  replier.reply("존재하지 않는 라이더명입니다.\n"+e);
+  replier.reply("존재하지 않는 라이더명입니다.");
+  Api.reload("Kartrider Test Api");
+  replier.reply("컴파일에 성공했습니다.\n일시적인 오류일 수 있으니 다시한번 요청해주세요.");
 }
 
 
