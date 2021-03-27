@@ -197,8 +197,8 @@ try {
     KartbodyName = kartList.data.find(e => e.hash === kartImg).KartName;
     KartbodyImg = kartUrl + kartImg + ".png";
   } catch(e) {
-    KartbodyName = "????";
-    KartbodyImg = "https://tmi.nexon.com/img/assets/empty_kart.png";
+    KartbodyName = "흠.. 무슨 카트일까요";
+    KartbodyImg = org.jsoup.Jsoup.connect("http://kart.nexon.com/Garage/Main?strRiderID="+msg.substr(5)).get().select("#RiderImg > img").attr("src");
   }
 Kakao.send(room, {"link_ver" : "4.0",
                   "template_id" : 45757,
