@@ -8,8 +8,7 @@ Kakao.login('',''); //아디•비번
 
 
 
-var Key =
-"";
+var Key = ""; //넥슨꺼
 var allsee = "\u200d".repeat (500);
 
 const Jsoup = org.jsoup.Jsoup;
@@ -99,18 +98,10 @@ if (msg.startsWith(".매치 ")) {
 }
   
   if (msg.startsWith("..유저 ")) {
-    /*
-  try {
-  var t = Jsoup.connect("https://tmi.nexon.com/kart/user?nick=LEG%25EA%25B1%25B4%25EC%259A%25B0").ignoreContentType(true).ignoreHttpErrors(true).get().select("#usercontent > div.profile > div.nick > h1 > span");
-  replier.reply(t);
-  } catch(e) {
-    replier.reply("해당 오류 "+e);
-  }
-  */
-  
+
 try {
   //닉네임으로 정보가져오기
-    let userId = Jsoup.connect (
+    var userId = Jsoup.connect (
     "https://api.nexon.co.kr/kart/v1.0/users/nickname/" + msg.substr(5))
     .header ("Authorization", Key).data ("nickname", msg.substr (5))
     .ignoreContentType(true).get().text();
@@ -123,17 +114,14 @@ try {
     
     //matchData에서 캐릭터번호랑 카트번호 가져오기, 없으면 안뜸
     try {
-    var characterImg = (JSON.parse(matchData).matches[0].matches[0].player.character);
-    var kartImg = (JSON.parse(matchData).matches[0].matches[0].player.kart);
-    var LicenseNumber = (JSON.parse(matchData).matches[0].matches[0].player.rankinggrade2);
+         var characterImg = (JSON.parse(matchData).matches[0].matches[0].player.character);
+         var kartImg = (JSON.parse(matchData).matches[0].matches[0].player.kart);
+         var LicenseNumber = (JSON.parse(matchData).matches[0].matches[0].player.rankinggrade2);
     } catch(e){
-      
-    var characterImg = "";
-    var kartImg = "";
-    var LicenseNumber = "";
-    //replier.reply(LicenseNumber);
+         var characterImg = "";
+         var kartImg = "";
+         var LicenseNumber = "";
     }
-    //replier.reply(LicenseNumber);
     var License = "";
     var LicenseLink = "https://tmi.nexon.com/img/icon_";
     switch(LicenseNumber)
@@ -160,7 +148,6 @@ try {
                     License = "";
                     break;
             }
-    //replier.reply(characterImg);
     
 
           let kartList =
@@ -200,6 +187,16 @@ try {
     KartbodyName = "흠.. 무슨 카트일까요";
     KartbodyImg = org.jsoup.Jsoup.connect("http://kart.nexon.com/Garage/Main?strRiderID="+msg.substr(5)).get().select("#RiderImg > img").attr("src");
   }
+  var ac = "T";
+} catch(e) {
+  var ac = "F";
+}
+//replier.reply(userId)
+//replier.reply(ac)
+if (ac == "T") {
+try {
+  
+//replier.reply(userId)
 Kakao.send(room, {"link_ver" : "4.0",
                   "template_id" : 45757,
                   "template_args" : {
@@ -214,14 +211,16 @@ Kakao.send(room, {"link_ver" : "4.0",
                     LevelImg: level
                   }
                  }, "custom");
-
+                 
+//replier.reply(KartbodyName + KartbodyImg);
 } catch(e) {
-  replier.reply("존재하지 않는 라이더명입니다.");
   Api.reload("Kartrider Test Api");
-  replier.reply("컴파일에 성공했습니다.\n일시적인 오류일 수 있으니 다시한번 요청해주세요.");
+  replier.reply(e+e.lineNumber+"유저 정보를 찾았으나 성공적으로 불러오지 못했습니다.\n다시한번 부탁드립니다.");
 }
 
-
+} else {
+  replier.reply("유저를 찾지 못했습니다.");
+}
 
 }
 }
