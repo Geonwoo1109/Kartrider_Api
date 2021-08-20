@@ -149,7 +149,7 @@ try {
                     break;
             }
     
-
+//카트리스트 가져오는거 없어짐..
           let kartList =
           JSON.parse(org.jsoup.Jsoup.connect('https://tmi.nexon.com/apis/KartNames')
         .header('referer', "https://tmi.nexon.com/kart/user?nick=" + msg.substr(5))
